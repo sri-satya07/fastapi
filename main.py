@@ -1,6 +1,7 @@
 from http.client import HTTPException
 from fastapi import FastAPI,Depends,APIRouter
 from database import Base, engine,  SessionLocal
+from typing import List
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from models import Users
@@ -34,7 +35,7 @@ class UserCreateSchema(UserSchema):
     password: str
 
 
-@api_router.get("/users/", response_model=list[UserSchema])
+@api_router.get("/users/", response_model=List[UserSchema])
 async def get_users(db: Session = Depends(get_db)):
     try:
         return db.query(Users).order_by(Users.id).all()

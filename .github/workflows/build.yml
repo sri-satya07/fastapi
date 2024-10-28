@@ -21,6 +21,6 @@ jobs:
             # - name: run tests
             #   run: |
             #       pytest
-            - name: run message
-              run: |
-                  print("Hello World")
+            # - name: run message
+            #   run: |
+            #       print("Hello World")
