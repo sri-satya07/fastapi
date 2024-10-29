@@ -7,6 +7,16 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
+
+        services:
+            mysql:
+                image: mysql:latest
+                env:
+                    mysql_root_password: Satya_123
+                    mysql_database: fastapi
+                ports:
+                    - 3306:3306
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
         steps:
             - uses: actions/checkout@v4
             - name: Set up Python
@@ -20,6 +30,8 @@ jobs:
                   pip install pytest
                                        
             - name: run test
+              env: 
+                  SQLALCHEMY_DATABASE_URL: "mysql+pymysql://root:Satya_123@localhost/fastapi"  
               run: |
                   pytest
             # - name: run message
