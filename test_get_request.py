@@ -7,6 +7,5 @@ client = TestClient(app)
 @pytest.mark.order(1)
 def test_get_users():
     response = client.get("/api/hello/")
-    assert response.status_code == 200
-     
+    assert response.status_code == 200     
     print("helloowwwww")
