@@ -12,8 +12,8 @@ jobs:
             mysql:
                 image: mysql:8.0
                 env:
-                    mysql_root_password: Satya_123
-                    mysql_database: fastapi
+                    MYSQL_ROOT_PASSWORD: Satya_123  # Ensure this is set
+                    MYSQL_DATABASE: fastapi
                 ports:
                     - 3306:3306
                 options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
