@@ -42,7 +42,7 @@ async def get_users(db: Session = Depends(get_db)):
     except:
         return HTTPException(status_code=500, detail="Something went wrong")
    
-@api_router.post("/users/create",response_model=UserCreateSchema)
+@api_router.post("/users/create/",response_model=UserCreateSchema)
 async def create_users(users: UserCreateSchema, db: Session = Depends(get_db)):
     try:
         u = Users(id= users.id,name=users.name, email=users.email, password=users.password)
@@ -55,7 +55,7 @@ async def create_users(users: UserCreateSchema, db: Session = Depends(get_db)):
         return HTTPException(status_code=400, detail="Invalid Request")
 
 
-@api_router.put("/users/{users_id}/",response_model=UserSchema)
+@api_router.put("/users/{users_id}",response_model=UserSchema)
 async def Update_users(users_id:int,users: UserSchema, db: Session = Depends(get_db)):
     try:
         u=db.query(Users).filter(Users.id==users_id).first()
@@ -67,14 +67,19 @@ async def Update_users(users_id:int,users: UserSchema, db: Session = Depends(get
     except:
         return HTTPException(status_code=404, detail="User not found")
 
-@api_router.delete("/users/{users_id}/",response_model=UserSchema)
-async def delete_users(users_id:int, db: Session = Depends(get_db)):
+@api_router.delete("/users/{users_id}")
+async def delete_users(users_id: int, db: Session = Depends(get_db)):
     try:
-        u=db.query(Users).filter(Users.id==users_id).first()
+        u = db.query(Users).filter(Users.id == users_id).first()
+        
+        if u is None:
+            raise HTTPException(status_code=404, detail="User not found")
+        
         db.delete(u)
         db.commit()
-        return {f"user of id {users_id} has been deleted":True}
-    except:
-        return HTTPException(status_code=500, detail="User not found")
-    
+        
+        return {"message": f"User with id {users_id} has been deleted"}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="An error occurred while deleting the user")
 app.include_router(api_router)
