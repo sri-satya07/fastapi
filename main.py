@@ -25,17 +25,19 @@ async def data():
     return{"message":"Namastey"}
 app.include_router(api_router)
 
-class UserSchema(BaseModel):  
+class UserSchema(BaseModel): 
+    name: str
+    email: str
+    password: str 
+    
+class UserCreateSchema(BaseModel):
     id: int
     name: str
     email: str
     class Config:
         from_attribute = True
-class UserCreateSchema(UserSchema):
-    password: str
 
-
-@api_router.get("/users/", response_model=List[UserSchema])
+@api_router.get("/users/", response_model=List[UserCreateSchema])
 async def get_users(db: Session = Depends(get_db)):
     try:
         return db.query(Users).order_by(Users.id).all()
@@ -43,9 +45,9 @@ async def get_users(db: Session = Depends(get_db)):
         return HTTPException(status_code=500, detail="Something went wrong")
    
 @api_router.post("/users/create/",response_model=UserCreateSchema)
-async def create_users(users: UserCreateSchema, db: Session = Depends(get_db)):
+async def create_users(users: UserSchema, db: Session = Depends(get_db)):
     try:
-        u = Users(id= users.id,name=users.name, email=users.email, password=users.password)
+        u = Users(name=users.name, email=users.email, password=users.password)
         db.add(u)
         db.commit()
         db.refresh(u) 

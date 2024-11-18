@@ -3,8 +3,7 @@ from sqlalchemy import  Column, Integer, String
 
 class Users(Base):
     __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String(50))
     email = Column(String(50), unique=True)
     password = Column(String(100))
