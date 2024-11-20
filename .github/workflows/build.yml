@@ -35,6 +35,4 @@ jobs:
                   SQLALCHEMY_DATABASE_URL: "mysql+pymysql://root:Satya_123@localhost/fastapi"  
               run: |
                   pytest
-            # - name: run message
-            #   run: |
-            #       print("Hello World")
+           
