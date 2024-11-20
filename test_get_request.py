@@ -14,7 +14,6 @@ def test_get_users():
 def test_get_user():
     response = client.get("/api/users/")
     assert response.status_code == 200
-    #get users from the response
     users = response.json()
     print(users)
 
